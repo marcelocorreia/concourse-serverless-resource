@@ -1,1 +1,0 @@
-# concourse-serverless-resource
