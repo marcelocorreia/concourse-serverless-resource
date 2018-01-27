@@ -1,0 +1,30 @@
+resource_types:
+  - name: serverless-resource
+    type: docker-image
+    source:
+      repository: marcelocorreia/concourse-serverless-resource
+      tag: latest
+
+resources:
+  - name: git-repo
+    type: git
+    source:
+      uri: {{git_repo_url}}
+      branch: master
+      private_key: {{git_private_key}}
+      username: {{github_user}}
+
+  - name: serverless
+    type: serverless-resource
+    source:
+      repository: {{container_fullname}}
+
+
+
+jobs:
+  - name: serverless-resource-release
+    serial: true
+    plan:
+      - get: git-repo
+        trigger: false
+      - put: serverless
