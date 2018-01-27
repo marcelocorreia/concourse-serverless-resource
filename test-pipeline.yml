@@ -17,7 +17,8 @@ resources:
   - name: serverless
     type: serverless-resource
     source:
-      repository: {{container_fullname}}
+      repository: serverless
+      version: serverless
 
 
 
