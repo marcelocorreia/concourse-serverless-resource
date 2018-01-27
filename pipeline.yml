@@ -24,7 +24,7 @@ resources:
       access_token: {{github_token}}
 
 jobs:
-  - name: docker-serverless-release
+  - name: serverless-resource-release
     serial: true
     plan:
       - get: docker-repo
