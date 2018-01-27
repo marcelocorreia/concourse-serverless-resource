@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# Always indicate a new version is available by setting the version to the current date
+jq -n "[
+  {date: \"$(date +%s)\"}
+]"
