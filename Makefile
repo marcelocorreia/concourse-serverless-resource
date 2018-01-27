@@ -20,7 +20,7 @@ docker-shell:
 
 set-pipeline: git-push
 	fly -t $(CI_TARGET) set-pipeline \
-		-n -p serverless-test \
+		-n -p $(PIPELINE_NAME) \
 		-c pipeline.yml \
 		-l $(HOME)/.ssh/ci-credentials.yml \
 		-v git_repo_url=git@github.com:$(NAMESPACE)/$(REPOSITORY).git \
@@ -37,7 +37,7 @@ set-pipeline: git-push
 
 test-pipeline:
 	fly -t $(CI_TARGET) set-pipeline \
-    		-n -p $(PIPELINE_NAME) \
+    		-n -p serverless-test \
     		-c test-pipeline.yml \
     		-l $(HOME)/.ssh/ci-credentials.yml \
     		-v git_repo_url=git@github.com:$(NAMESPACE)/$(REPOSITORY).git \
