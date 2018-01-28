@@ -42,7 +42,7 @@ jobs:
     build_logs_to_retain: 10
     plan:
       - get: docker-repo
-        trigger: false
+        trigger: true
       - put: docker_image
         params:
           build: docker-repo
