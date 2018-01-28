@@ -32,16 +32,35 @@ exitOutput(){
 case ${action} in
 	deploy)
 		echo Deploying Serverless
-		cd $(ls)/${job_dir} && serverless deploy
+		cd $(ls)/${job_dir} && serverless ${action}
+		exitOutput && exit 0
+	  ;;
+	logs)
+		echo Removing Serverless
+		cd $(ls)/${job_dir} && serverless ${action}
+		exitOutput && exit 0
+	  ;;
+	info)
+		echo Removing Serverless
+		cd $(ls)/${job_dir} && serverless ${action}
+		exitOutput && exit 0
+	  ;;
+	metrics)
+		echo Removing Serverless
+		cd $(ls)/${job_dir} && serverless ${action}
 		exitOutput && exit 0
 	  ;;
 	remove)
 		echo Removing Serverless
-		cd $(ls)/${job_dir} && serverless remove
+		cd $(ls)/${job_dir} && serverless ${action}
 		exitOutput && exit 0
 	  ;;
 	invoke)
 		echo "TODO://"
+		if [ ${handler} == "" ];then
+			echo "ERROR: handler undefined"
+			exitOutput && exit 1
+		fi
 		cd $(ls)/${job_dir} && serverless invoke -f ${handler} -l
 		exitOutput && exit 0
 	  ;;
