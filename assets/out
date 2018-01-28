@@ -12,7 +12,9 @@ set +x
 payload=$(mktemp /tmp/resource-in.XXXXXX)
 
 cat > "${payload}" <&0
-
+echo $1
+echo "echo::$payload::"
+echo "cat" && cat "$payload"
 
 ls -l /
 pwd
