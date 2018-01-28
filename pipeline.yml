@@ -53,7 +53,7 @@ jobs:
           name: docker-repo/version
           tag: docker-repo/version
 
-  - name: serverless-deploy-test
+  - name: deploy
     build_logs_to_retain: 10
     serial: true
     plan:
@@ -65,3 +65,30 @@ jobs:
           action: deploy
           aws_access_key_id: {{aws_access_key_id}}
           aws_secret_access_key: {{aws_secret_access_key}}
+
+  - name: remove
+    build_logs_to_retain: 10
+    serial: true
+    plan:
+      - get: docker-repo
+        trigger: false
+      - put: serverless
+        params:
+          job_dir: 'lambda/hello'
+          action: deploy
+          aws_access_key_id: {{aws_access_key_id}}
+          aws_secret_access_key: {{aws_secret_access_key}}
+
+  - name: invoke
+    build_logs_to_retain: 10
+    serial: true
+    plan:
+      - get: docker-repo
+        trigger: false
+      - put: serverless
+        params:
+          job_dir: 'lambda/hello'
+          action: deploy
+          aws_access_key_id: {{aws_access_key_id}}
+          aws_secret_access_key: {{aws_secret_access_key}}
+
