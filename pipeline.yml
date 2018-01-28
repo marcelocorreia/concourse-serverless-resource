@@ -83,15 +83,15 @@ jobs:
   - name: invoke
     build_logs_to_retain: 10
     serial: true
+    passed: [deploy]
     plan:
       - get: docker-repo
         trigger: false
-        passed: [deploy]
       - put: serverless
         params:
           job_dir: 'lambda/hello'
           action: invoke
-          handler: helloWorld
+          handler: hello
           aws_access_key_id: {{aws_access_key_id}}
           aws_secret_access_key: {{aws_secret_access_key}}
 

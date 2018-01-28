@@ -11,10 +11,12 @@ service: serverless-hello-world
 provider:
   name: aws
   runtime: nodejs6.10
+  stage: RnD
+  region: ap-southeast-2
 
 # The `functions` block defines what code to deploy
 functions:
-  helloWorld:
+  hello:
     handler: handler.helloWorld
     # The `events` block defines how to trigger the handler.helloWorld code
     events:
