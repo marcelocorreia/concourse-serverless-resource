@@ -29,8 +29,24 @@ exitOutput(){
 	echo "$timestamp" $serverless_version| jq -s add  >&3
 }
 
-pwd
-ls -l
+case ${action} in
+	deploy)
+		cd $(ls)/${job_dir} && serverless deploy
+		exit 0
+	  ;;
+	remove)
+		cd ${job_dir} && serverless remove
+		exit 0
+	  ;;
+	delete)
+		run
+		exit 0
+	  ;;
 
+	*)
+		echo "ERROR:"
+		exit 1
+	  ;;
+esac
 
 exitOutput
