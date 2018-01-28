@@ -1,20 +1,29 @@
 #!/usr/bin/env bash
 
+
 set -e
 
-exec 3>&1 # make stdout available as fd 3 for the result
-exec 1>&2 # redirect all output to stderr for logging
-timestamp="$(jq -n "{version:{timestamp:\"$(date +%s)\"}}")"
-serverless_version="$(jq -n "{serverless_version:{serverless_version:\"$(serverless --version)\"}}")"
+cd "${1}"
 
-ls -l /
-pwd
-whoami
+exec 3>&1
+exec 1>&2
+set +x
+
 payload=$(mktemp /tmp/resource-in.XXXXXX)
 
 cat > "${payload}" <&0
 
+
+ls -l /
+pwd
+whoami
+
 job_dir="$(jq -r '.params.job_dir' < "${payload}")"
+
+
+
+timestamp="$(jq -n "{version:{timestamp:\"$(date +%s)\"}}")"
+serverless_version="$(jq -n "{serverless_version:{serverless_version:\"$(serverless --version)\"}}")"
 
 echo "JOB -->${job_dir}<--"
 echo "$timestamp" $serverless_version| jq -s add
