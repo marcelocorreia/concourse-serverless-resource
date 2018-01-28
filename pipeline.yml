@@ -37,7 +37,7 @@ resources:
       version: serverless
 
 jobs:
-  - name: docker-resource
+  - name: docker-resource-build
     serial: true
     build_logs_to_retain: 10
     plan:
@@ -58,7 +58,8 @@ jobs:
     serial: true
     plan:
       - get: docker-repo
-        trigger: false
+        trigger: true
+        passed: [docker-resource-build]
       - put: serverless
         params:
           job_dir: 'lambda/hello'
