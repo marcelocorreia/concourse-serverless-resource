@@ -37,7 +37,7 @@ resources:
       version: serverless
 
 jobs:
-  - name: serverless
+  - name: docker-resource
     serial: true
     build_logs_to_retain: 10
     plan:
