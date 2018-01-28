@@ -7,8 +7,10 @@ exec 1>&2 # redirect all output to stderr for logging
 timestamp="$(jq -n "{version:{timestamp:\"$(date +%s)\"}}")"
 serverless_version="$(jq -n "{serverless_version:{serverless_version:\"$(serverless --version)\"}}")"
 
-ls -l
+ls -l /
 pwd
+whoami
+echo "JOB -->${job_dir}<--"
 echo "$timestamp" $serverless_version| jq -s add
 
 echo "$timestamp" $serverless_version| jq -s add  >&3
