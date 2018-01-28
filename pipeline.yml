@@ -42,7 +42,7 @@ jobs:
     build_logs_to_retain: 10
     plan:
       - get: docker-repo
-        trigger: true
+        trigger: false
       - put: docker_image
         params:
           build: docker-repo
@@ -100,7 +100,7 @@ jobs:
     serial: true
     plan:
       - get: docker-repo
-        passed: [deploy]
+        passed: [invoke]
         trigger: true
       - put: serverless
         params:
