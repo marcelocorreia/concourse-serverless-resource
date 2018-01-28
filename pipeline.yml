@@ -24,7 +24,7 @@ resources:
       access_token: {{github_token}}
 
 jobs:
-  - name: serverless-resource-release
+  - name: serverless
     serial: true
     build_logs_to_retain: 10
     plan:
