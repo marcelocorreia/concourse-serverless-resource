@@ -14,12 +14,32 @@ job_dir="$(jq -r '.params.job_dir// ""' < "${payload}")"
 action="$(jq -r '.params.action// ""' < "${payload}")"
 
 
-echo "JOB    -->${job_dir}<--"
-echo "ACTION -->${action}<--"
 
 ls -l
 
 serverless_version="$(jq -n "{serverless_version:{serverless_version:\"$(serverless --version)\"}}")"
 timestamp="$(jq -n "{version:{timestamp:\"$(date +%s)\"}}")"
+
+
+case ${action} in
+	deploy)
+		cd ${job_dir} && serverless deploy
+		exit 0
+	  ;;
+	remove)
+		cd ${job_dir} && serverless remove
+		exit 0
+	  ;;
+	delete)
+		run
+		exit 0
+	  ;;
+
+	*)
+		echo "ERROR:"
+		exit 1
+	  ;;
+esac
+
 
 echo "$timestamp" $serverless_version| jq -s add  >&3
