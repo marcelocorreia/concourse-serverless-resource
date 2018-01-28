@@ -83,9 +83,9 @@ jobs:
   - name: invoke
     build_logs_to_retain: 10
     serial: true
-    passed: [deploy]
     plan:
       - get: docker-repo
+        passed: [deploy]
         trigger: false
       - put: serverless
         params:
