@@ -71,7 +71,7 @@ jobs:
     serial: true
     plan:
       - get: docker-repo
-        trigger: false
+        trigger: true
         passed: [invoke]
       - put: serverless
         params:
@@ -86,7 +86,7 @@ jobs:
     plan:
       - get: docker-repo
         passed: [deploy]
-        trigger: false
+        trigger: true
       - put: serverless
         params:
           job_dir: 'lambda/hello'
