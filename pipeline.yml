@@ -26,6 +26,7 @@ resources:
 jobs:
   - name: serverless-resource-release
     serial: true
+    build_logs_to_retain: 10
     plan:
       - get: docker-repo
         trigger: true

@@ -24,6 +24,7 @@ resources:
 
 jobs:
   - name: serverless-resource-release
+    build_logs_to_retain: 10
     serial: true
     plan:
       - get: git-repo
