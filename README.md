@@ -25,17 +25,17 @@ Executes serverless command as defined in the parameter **action**.
 #### Parameters
 
 * `job_dir`: *Required.* Location on the serverless job. 
-E.g.: $GITREPO/lambda/hello
+**E.g.:** $GIT_REPO/lambda/hello
 * `action`: *Required.* Serverless action command
 	* deploy
 	* info
 	* metrics
 	* remove
 	* invoke
+* `aws_secret_access_key`: *Required.* AWS Credential
+* `aws_access_key_id`: *Required.* AWS Credential
+* `handler`: *Optional.* Lambda handler function name
 
-* `aws_access_key_id`: *Optional.* AWS Credential
-* `aws_secret_access_key`: *Optional.* AWS Credential
-             
 ## Example
 
 ``` yaml

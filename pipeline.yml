@@ -34,6 +34,8 @@ resources:
     type: serverless-resource
     source:
       repository: serverless
+      aws_access_key_id: {{aws_access_key_id}}
+      aws_secret_access_key: {{aws_secret_access_key}}
 
 jobs:
   - name: docker-resource-build
@@ -63,8 +65,6 @@ jobs:
         params:
           job_dir: 'lambda/hello'
           action: deploy
-          aws_access_key_id: {{aws_access_key_id}}
-          aws_secret_access_key: {{aws_secret_access_key}}
 
   - name: remove
     build_logs_to_retain: 10
@@ -77,8 +77,6 @@ jobs:
         params:
           job_dir: 'lambda/hello'
           action: remove
-          aws_access_key_id: {{aws_access_key_id}}
-          aws_secret_access_key: {{aws_secret_access_key}}
 
   - name: info
     build_logs_to_retain: 10
@@ -92,8 +90,6 @@ jobs:
           job_dir: 'lambda/hello'
           action: info
           handler: hello
-          aws_access_key_id: {{aws_access_key_id}}
-          aws_secret_access_key: {{aws_secret_access_key}}
 
   - name: metrics
     build_logs_to_retain: 10
@@ -107,8 +103,6 @@ jobs:
           job_dir: 'lambda/hello'
           action: metrics
           handler: hello
-          aws_access_key_id: {{aws_access_key_id}}
-          aws_secret_access_key: {{aws_secret_access_key}}
 
   - name: invoke
     build_logs_to_retain: 10
@@ -122,6 +116,3 @@ jobs:
           job_dir: 'lambda/hello'
           action: invoke
           handler: hello
-          aws_access_key_id: {{aws_access_key_id}}
-          aws_secret_access_key: {{aws_secret_access_key}}
-

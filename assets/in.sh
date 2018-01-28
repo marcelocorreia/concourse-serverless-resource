@@ -1,19 +1,31 @@
 #!/usr/bin/env bash
 
-set -e
+source $(dirname $0)/common.sh
 
-exec 3>&1 # make stdout available as fd 3 for the result
-exec 1>&2 # redirect all output to stderr for logging
+case ${action} in
+	info)
+		echo "Serverless Info"
+		cd $(ls)/${job_dir} && serverless ${action}
+		exitOutput 0
+	  ;;
+	metrics)
+		echo "Serverless Metrics"
+		cd $(ls)/${job_dir} && serverless ${action}
+		exitOutput 0
+	  ;;
+	invoke)
+		echo "Invoking Lambda function: ${handler}" >&2
+		if [ ${handler} == "" ];then
+			echo "ERROR: handler undefined" >&2
+			exitOutput && exit 1
+		fi
+		cd $(ls)/${job_dir} && serverless invoke -f ${handler} -l
+		exitOutput
+	  ;;
 
-PAYLOAD=$(mktemp /tmp/resource-in.XXXXXX)
+	*)
+		echo "ERROR:" >&2
+		exitOutput 1
+	  ;;
+esac
 
-cat > "$PAYLOAD" <&0
-
-TS=$(jq '.version.timestamp // empty' < "$PAYLOAD")
-[ -z "$TS" ] && TS='"none"'
-
-jq -n "{
-  version: {
-    timestamp: $TS
-  }
-}" >&3
