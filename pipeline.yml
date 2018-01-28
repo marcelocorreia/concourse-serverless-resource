@@ -75,7 +75,7 @@ jobs:
       - put: serverless
         params:
           job_dir: 'lambda/hello'
-          action: deploy
+          action: remove
           aws_access_key_id: {{aws_access_key_id}}
           aws_secret_access_key: {{aws_secret_access_key}}
 
@@ -88,7 +88,8 @@ jobs:
       - put: serverless
         params:
           job_dir: 'lambda/hello'
-          action: deploy
+          action: invoke
+          handler: hello
           aws_access_key_id: {{aws_access_key_id}}
           aws_secret_access_key: {{aws_secret_access_key}}
 
