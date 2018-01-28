@@ -34,7 +34,6 @@ resources:
     type: serverless-resource
     source:
       repository: serverless
-      version: serverless
 
 jobs:
   - name: docker-resource-build
