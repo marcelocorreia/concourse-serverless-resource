@@ -25,10 +25,12 @@ fi
 
 case ${action} in
 	deploy)
+		echo Deploying Serverless
 		cd $(ls)/${job_dir} && serverless deploy
 		exitOutput && exit 0
 	  ;;
 	remove)
+		echo Removing Serverless
 		cd $(ls)/${job_dir} && serverless remove
 		exitOutput && exit 0
 	  ;;
