@@ -32,4 +32,4 @@ jobs:
       - put: serverless
         params:
           job_dir: 'lambda/hello'
-          text_file: 'lambda/hello/text'
+          action: deploy

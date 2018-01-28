@@ -1,28 +1,25 @@
 #!/usr/bin/env bash
 
 set -e
-
 cd "${1}"
-
 exec 3>&1
 exec 1>&2
 set +x
-# for jq
-PATH=/usr/local/bin:$PATH
 
 payload=$(mktemp /tmp/resource-in.XXXXXX)
-
 cat > "${payload}" <&0
 
 
-timestamp="$(jq -n "{version:{timestamp:\"$(date +%s)\"}}")"
-
-text_file="$(jq -r '.params.text_file // ""' < "${payload}")"
 job_dir="$(jq -r '.params.job_dir// ""' < "${payload}")"
+action="$(jq -r '.params.action// ""' < "${payload}")"
+
+
+echo "JOB    -->${job_dir}<--"
+echo "ACTION -->${action}<--"
+
+ls -l
 
 serverless_version="$(jq -n "{serverless_version:{serverless_version:\"$(serverless --version)\"}}")"
-
-echo "JOB -->${job_dir}<--"
-echo "$timestamp" $serverless_version| jq -s add
+timestamp="$(jq -n "{version:{timestamp:\"$(date +%s)\"}}")"
 
 echo "$timestamp" $serverless_version| jq -s add  >&3
