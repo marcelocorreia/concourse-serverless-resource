@@ -91,7 +91,7 @@ jobs:
         params:
           job_dir: 'lambda/hello'
           action: invoke
-          handler: hello
+          handler: helloWorld
           aws_access_key_id: {{aws_access_key_id}}
           aws_secret_access_key: {{aws_secret_access_key}}
 
