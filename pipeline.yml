@@ -57,7 +57,7 @@ jobs:
     build_logs_to_retain: 10
     serial: true
     plan:
-      - get: git-repo
+      - get: docker-repo
         trigger: false
       - put: serverless
         params:
