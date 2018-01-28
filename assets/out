@@ -10,6 +10,12 @@ serverless_version="$(jq -n "{serverless_version:{serverless_version:\"$(serverl
 ls -l /
 pwd
 whoami
+payload=$(mktemp /tmp/resource-in.XXXXXX)
+
+cat > "${payload}" <&0
+
+job_dir="$(jq -r '.params.job_dir' < "${payload}")"
+
 echo "JOB -->${job_dir}<--"
 echo "$timestamp" $serverless_version| jq -s add
 
