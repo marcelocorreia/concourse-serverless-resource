@@ -8,4 +8,5 @@ exec 1>&2 # redirect all output to stderr for logging
 ls -l
 
 timestamp="$(jq -n "{version:{timestamp:\"$(date +%s)\"}}")"
+serverless_version="$(jq -n "{serverless_version:{version:\"$(serverless --version)\"}}")"
 echo "$timestamp" | jq -s add  >&3
