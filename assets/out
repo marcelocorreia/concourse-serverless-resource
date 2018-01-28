@@ -20,7 +20,7 @@ ls -l /
 pwd
 whoami
 
-job_dir="$(jq -r '.params.job_dir' < "${payload}")"
+job_dir="$(jq -r '.source.job_dir' < "${payload}")"
 
 
 
