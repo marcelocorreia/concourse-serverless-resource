@@ -29,11 +29,11 @@ case ${action} in
 		exit 0
 	  ;;
 	remove)
-		cd ${job_dir} && serverless remove
+		cd $(ls)/${job_dir} && serverless remove
 		exit 0
 	  ;;
-	delete)
-		run
+	invoke)
+		echo "TODO://"
 		exit 0
 	  ;;
 
