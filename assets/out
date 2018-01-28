@@ -22,6 +22,11 @@ if [  aws_secret_access_key != "" ];then
 	export AWS_SECRET_ACCESS_KEY=${aws_secret_access_key}
 fi
 
+exitOutput(){
+	serverless_version="$(jq -n "{serverless_version:{serverless_version:\"$(serverless --version)\"}}")"
+	timestamp="$(jq -n "{version:{timestamp:\"$(date +%s)\"}}")"
+	echo "$timestamp" $serverless_version| jq -s add  >&3
+}
 
 case ${action} in
 	deploy)
@@ -45,8 +50,3 @@ case ${action} in
 	  ;;
 esac
 
-exitOutput(){
-	serverless_version="$(jq -n "{serverless_version:{serverless_version:\"$(serverless --version)\"}}")"
-	timestamp="$(jq -n "{version:{timestamp:\"$(date +%s)\"}}")"
-	echo "$timestamp" $serverless_version| jq -s add  >&3
-}
