@@ -80,6 +80,36 @@ jobs:
           aws_access_key_id: {{aws_access_key_id}}
           aws_secret_access_key: {{aws_secret_access_key}}
 
+  - name: info
+    build_logs_to_retain: 10
+    serial: true
+    plan:
+      - get: docker-repo
+        passed: [deploy]
+        trigger: true
+      - put: serverless
+        params:
+          job_dir: 'lambda/hello'
+          action: info
+          handler: hello
+          aws_access_key_id: {{aws_access_key_id}}
+          aws_secret_access_key: {{aws_secret_access_key}}
+
+  - name: metrics
+    build_logs_to_retain: 10
+    serial: true
+    plan:
+      - get: docker-repo
+        passed: [deploy]
+        trigger: true
+      - put: serverless
+        params:
+          job_dir: 'lambda/hello'
+          action: metrics
+          handler: hello
+          aws_access_key_id: {{aws_access_key_id}}
+          aws_secret_access_key: {{aws_secret_access_key}}
+
   - name: invoke
     build_logs_to_retain: 10
     serial: true

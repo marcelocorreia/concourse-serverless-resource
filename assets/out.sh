@@ -31,22 +31,17 @@ exitOutput(){
 
 case ${action} in
 	deploy)
-		echo Deploying Serverless
-		cd $(ls)/${job_dir} && serverless ${action}
-		exitOutput && exit 0
-	  ;;
-	logs)
-		echo Removing Serverless
+		echo Serverless Deploy
 		cd $(ls)/${job_dir} && serverless ${action}
 		exitOutput && exit 0
 	  ;;
 	info)
-		echo Removing Serverless
+		echo Serverless Info
 		cd $(ls)/${job_dir} && serverless ${action}
 		exitOutput && exit 0
 	  ;;
 	metrics)
-		echo Removing Serverless
+		echo Serverless Metrics
 		cd $(ls)/${job_dir} && serverless ${action}
 		exitOutput && exit 0
 	  ;;
