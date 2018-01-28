@@ -30,5 +30,6 @@ jobs:
       - get: git-repo
         trigger: false
       - put: serverless
-        source:
-          job_dir: lambda/hello
+        params:
+          job_dir: 'lambda/hello'
+          text_file: 'lambda/hello/text'
