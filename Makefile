@@ -35,7 +35,7 @@ set-pipeline: git-push
 	fly -t $(CI_TARGET) watch -j $(PIPELINE_NAME)/$(PIPELINE_NAME)
 .PHONY: set-pipeline
 
-test-pipeline:
+test-pipeline: git-push
 	fly -t $(CI_TARGET) set-pipeline \
     		-n -p serverless-test \
     		-c test-pipeline.yml \
