@@ -46,7 +46,7 @@ test-pipeline: git-push
             -v release_version=$(VERSION)
 
 pipeline-login:
-	fly -t dev login -n dev -c https://ci.correia.io
+	fly -t $(CI_TARGET) login -n main -c http://localhost:8080
 
 watch-pipeline:
 	fly -t $(CI_TARGET) watch -j $(PIPELINE_NAME)/$(PIPELINE_NAME)
@@ -59,6 +59,34 @@ destroy-pipeline:
 docs:
 	grip -b
 
+concourse-pull:
+	cd concourse && docker-compose pull
+
+concourse-up:
+	cd concourse && CONCOURSE_EXTERNAL_URL=http://localhost:8080 docker-compose up -d
+
+concourse-down:
+	cd concourse && docker-compose down
+
+concourse-stop:
+	cd concourse && docker-compose stop
+
+concourse-start:
+	cd concourse && docker-compose start
+
+concourse-logs:
+	cd concourse && docker-compose logs -f
+
+concourse-keys:
+	@[ -f ./concourse/keys ] && echo ./concourse/keys folder found || $(call create-concourse-keys)
 
 
-
+define create-concourse-keys
+	echo "Creating Concourse keys"
+	mkdir -p ./concourse/keys/web ./concourse/keys/worker;
+	ssh-keygen -t rsa -f ./concourse/keys/web/tsa_host_key -N ''
+	ssh-keygen -t rsa -f ./concourse/keys/web/session_signing_key -N ''
+	ssh-keygen -t rsa -f ./concourse/keys/worker/worker_key -N ''
+	cp ./concourse/keys/worker/worker_key.pub ./concourse/keys/web/authorized_worker_keys
+	cp ./concourse/keys/web/tsa_host_key.pub ./concourse/keys/worker
+endef
