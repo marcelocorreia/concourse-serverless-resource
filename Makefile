@@ -5,7 +5,7 @@ VERSION=$(shell cat version)
 PIPELINE_NAME=$(REPOSITORY)
 CI_TARGET=dev
 CI_CREDS_FILE?=$(HOME)/.ssh/ci-credentials.yml
-CONCOURSE_EXTERNAL_URL?=http://localhost:8080
+CONCOURSE_EXTERNAL_URL?=https://ci.correia.io
 
 # Git
 git-push:
@@ -39,7 +39,7 @@ pipeline-set:
 	fly -t $(CI_TARGET) unpause-pipeline -p $(PIPELINE_NAME)
 
 pipeline-login:
-	fly -t $(CI_TARGET) login -n main -c $(CONCOURSE_EXTERNAL_URL)
+	fly -t $(CI_TARGET) login -n dev -c $(CONCOURSE_EXTERNAL_URL)
 
 pipeline-watch:
 	fly -t $(CI_TARGET) watch -j $(PIPELINE_NAME)/$(PIPELINE_NAME)
