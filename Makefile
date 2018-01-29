@@ -4,25 +4,31 @@ NAMESPACE=marcelocorreia
 VERSION=$(shell cat version)
 PIPELINE_NAME=$(REPOSITORY)
 CI_TARGET=dev
+CI_CREDS_FILE?=$(HOME)/.ssh/ci-credentials.yml
+CONCOURSE_EXTERNAL_URL?=http://localhost:8080
 
+# Git
 git-push:
 	git add .; git commit -m "Pipeline WIP"; git push
 
+# Docker
 docker-build:
 	cat Dockerfile | sed  's/ARG version=".*"/ARG version="$(VERSION)"/' > /tmp/Dockerfile.tmp
 	cat /tmp/Dockerfile.tmp > Dockerfile
 	rm /tmp/Dockerfile.tmp
 	docker build -t $(NAMESPACE)/$(CONTAINER):latest .
-.PHONY: build
+.PHONY: docker-build
 
 docker-shell:
 	docker run --rm -it $(NAMESPACE)/$(CONTAINER):latest bash
+.PHONY: docker-shell
 
-set-pipeline: git-push
+# Pipeline
+pipeline-set:
 	fly -t $(CI_TARGET) set-pipeline \
 		-n -p $(PIPELINE_NAME) \
 		-c pipeline.yml \
-		-l $(HOME)/.ssh/ci-credentials.yml \
+		-l $(CI_CREDS_FILE) \
 		-v git_repo_url=git@github.com:$(NAMESPACE)/$(REPOSITORY).git \
         -v container_fullname=$(NAMESPACE)/$(CONTAINER) \
         -v container_name=$(CONTAINER) \
@@ -31,62 +37,48 @@ set-pipeline: git-push
         -v release_version=$(VERSION)
 
 	fly -t $(CI_TARGET) unpause-pipeline -p $(PIPELINE_NAME)
-.PHONY: set-pipeline
-
-test-pipeline: git-push
-	fly -t $(CI_TARGET) set-pipeline \
-    		-n -p serverless-test \
-    		-c test-pipeline.yml \
-    		-l $(HOME)/.ssh/ci-credentials.yml \
-    		-v git_repo_url=git@github.com:$(NAMESPACE)/$(REPOSITORY).git \
-            -v container_fullname=$(NAMESPACE)/$(CONTAINER) \
-            -v container_name=$(CONTAINER) \
-    		-v git_repo=$(REPOSITORY) \
-            -v git_branch=master \
-            -v release_version=$(VERSION)
 
 pipeline-login:
-	fly -t $(CI_TARGET) login -n main -c http://localhost:8080
+	fly -t $(CI_TARGET) login -n main -c $(CONCOURSE_EXTERNAL_URL)
 
-watch-pipeline:
+pipeline-watch:
 	fly -t $(CI_TARGET) watch -j $(PIPELINE_NAME)/$(PIPELINE_NAME)
-.PHONY: watch-pipeline
 
-destroy-pipeline:
+pipeline-destroy:
 	fly -t $(CI_TARGET) destroy-pipeline -p $(PIPELINE_NAME)
-.PHONY: destroy-pipeline
 
-docs:
-	grip -b
-
+# Concourse
 concourse-pull:
-	cd concourse && docker-compose pull
+	$(call concourse_compose,pull)
 
-concourse-up:
-	cd concourse && CONCOURSE_EXTERNAL_URL=http://localhost:8080 docker-compose up -d
+concourse-up: _concourse-keys
+	$(call concourse_compose,up -d)
 
 concourse-down:
-	cd concourse && docker-compose down
+	$(call concourse_compose,down)
 
 concourse-stop:
-	cd concourse && docker-compose stop
+	$(call concourse_compose,stop)
 
 concourse-start:
-	cd concourse && docker-compose start
+	$(call concourse_compose,start)
 
 concourse-logs:
-	cd concourse && docker-compose logs -f
+	$(call concourse_compose,logs -f)
 
-concourse-keys:
-	@[ -f ./concourse/keys ] && echo ./concourse/keys folder found || $(call create-concourse-keys)
+_concourse-keys:
+	@if [ ! -d ./concourse/keys ];then \
+ 		echo "Creating Concourse keys"; \
+        mkdir -p ./concourse/keys/web ./concourse/keys/worker; \
+        ssh-keygen -t rsa -f ./concourse/keys/web/tsa_host_key -N ''; \
+        ssh-keygen -t rsa -f ./concourse/keys/web/session_signing_key -N ''; \
+        ssh-keygen -t rsa -f ./concourse/keys/worker/worker_key -N ''; \
+        cp ./concourse/keys/worker/worker_key.pub ./concourse/keys/web/authorized_worker_keys; \
+        cp ./concourse/keys/web/tsa_host_key.pub ./concourse/keys/worker; \
+	fi
 
-
-define create-concourse-keys
-	echo "Creating Concourse keys"
-	mkdir -p ./concourse/keys/web ./concourse/keys/worker;
-	ssh-keygen -t rsa -f ./concourse/keys/web/tsa_host_key -N ''
-	ssh-keygen -t rsa -f ./concourse/keys/web/session_signing_key -N ''
-	ssh-keygen -t rsa -f ./concourse/keys/worker/worker_key -N ''
-	cp ./concourse/keys/worker/worker_key.pub ./concourse/keys/web/authorized_worker_keys
-	cp ./concourse/keys/web/tsa_host_key.pub ./concourse/keys/worker
+# Defined Functions
+define concourse_compose
+	cd concourse && CONCOURSE_EXTERNAL_URL=$(CONCOURSE_EXTERNAL_URL) docker-compose $1
 endef
+
