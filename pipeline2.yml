@@ -66,3 +66,53 @@ jobs:
           job_dir: 'lambda/hello'
           action: deploy
 
+  - name: remove
+    build_logs_to_retain: 10
+    serial: true
+    plan:
+      - get: docker-repo
+        trigger: true
+        passed: [invoke,info,metrics]
+      - put: serverless
+        params:
+          job_dir: 'lambda/hello'
+          action: remove
+
+  - name: info
+    build_logs_to_retain: 10
+    serial: true
+    plan:
+      - get: docker-repo
+        passed: [deploy]
+        trigger: true
+      - put: serverless
+        params:
+          job_dir: 'lambda/hello'
+          action: info
+          handler: hello
+
+  - name: metrics
+    build_logs_to_retain: 10
+    serial: true
+    plan:
+      - get: docker-repo
+        passed: [invoke]
+        trigger: true
+      - put: serverless
+        params:
+          job_dir: 'lambda/hello'
+          action: metrics
+          handler: hello
+
+  - name: invoke
+    build_logs_to_retain: 10
+    serial: true
+    plan:
+      - get: docker-repo
+        passed: [deploy]
+        trigger: true
+      - put: serverless
+        params:
+          job_dir: 'lambda/hello'
+          action: invoke
+          handler: hello
