@@ -3,8 +3,10 @@ CONTAINER=concourse-serverless-resource
 NAMESPACE=marcelocorreia
 VERSION=$(shell cat version)
 PIPELINE_NAME=$(REPOSITORY)
-CI_TARGET=dev
+CI_TARGET?=dev
+CI_TEAM_NAME?=dev
 CI_CREDS_FILE?=$(HOME)/.ssh/ci-credentials.yml
+#CONCOURSE_EXTERNAL_URL?=http://localhost:8080
 CONCOURSE_EXTERNAL_URL?=https://ci.correia.io
 
 # Git
@@ -16,11 +18,11 @@ docker-build:
 	cat Dockerfile | sed  's/ARG version=".*"/ARG version="$(VERSION)"/' > /tmp/Dockerfile.tmp
 	cat /tmp/Dockerfile.tmp > Dockerfile
 	rm /tmp/Dockerfile.tmp
-	docker build -t $(NAMESPACE)/$(CONTAINER):latest .
+	docker build -t $(NAMESPACE)/$(CONTAINER):dev .
 .PHONY: docker-build
 
 docker-shell:
-	docker run --rm -it $(NAMESPACE)/$(CONTAINER):latest bash
+	docker run --rm -it $(NAMESPACE)/$(CONTAINER):dev bash
 .PHONY: docker-shell
 
 # Pipeline
@@ -39,7 +41,7 @@ pipeline-set:
 	fly -t $(CI_TARGET) unpause-pipeline -p $(PIPELINE_NAME)
 
 pipeline-login:
-	fly -t $(CI_TARGET) login -n dev -c $(CONCOURSE_EXTERNAL_URL)
+	@fly -t $(CI_TARGET) login -n $(CI_TEAM_NAME) -c $(CONCOURSE_EXTERNAL_URL)
 
 pipeline-watch:
 	fly -t $(CI_TARGET) watch -j $(PIPELINE_NAME)/$(PIPELINE_NAME)

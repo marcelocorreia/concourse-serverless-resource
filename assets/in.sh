@@ -14,9 +14,9 @@ case ${action} in
 		exitOutput 0
 	  ;;
 	invoke)
-		echo "Invoking Lambda function: ${handler}" >&2
+		echo "Invoking Lambda function: ${handler}"
 		if [ ${handler} == "" ];then
-			echo "ERROR: handler undefined" >&2
+			echo "ERROR: handler undefined"
 			exitOutput && exit 1
 		fi
 		cd $(ls)/${job_dir} && serverless invoke -f ${handler} -l
@@ -24,7 +24,7 @@ case ${action} in
 	  ;;
 
 	*)
-		echo "ERROR:" >&2
+		echo "ERROR:"
 		exitOutput 1
 	  ;;
 esac

@@ -1,5 +1,3 @@
-#!/usr/bin/env bash
-
 set -e
 cd "${1}"
 exec 3>&1

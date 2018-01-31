@@ -3,7 +3,7 @@ resource_types:
     type: docker-image
     source:
       repository: marcelocorreia/concourse-serverless-resource
-      tag: latest
+      tag: 1.0.5
 
 resources:
   - name: docker-repo
@@ -60,7 +60,6 @@ jobs:
     plan:
       - get: docker-repo
         trigger: true
-        passed: [docker-resource-build]
       - put: serverless
         params:
           job_dir: 'lambda/hello'
