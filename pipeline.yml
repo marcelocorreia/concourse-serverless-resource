@@ -65,8 +65,8 @@ jobs:
         params: {bump: patch}
       - put: github_release
         params:
-          name: docker-repo/version
-          tag: docker-repo/version
+          name: resource_version/version
+          tag: resource_version/version
 
   - name: deploy
     build_logs_to_retain: 10
