@@ -26,7 +26,7 @@ docker-shell:
 .PHONY: docker-shell
 
 # Pipeline
-pipeline-set:
+pipeline-set: git-push
 	fly -t $(CI_TARGET) set-pipeline \
 		-n -p $(PIPELINE_NAME) \
 		-c pipeline.yml \

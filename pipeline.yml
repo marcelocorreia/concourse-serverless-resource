@@ -56,13 +56,13 @@ jobs:
     plan:
       - get: docker-repo
         trigger: true
+      - put: resource_version
+        params: {bump: patch}
       - put: docker_image
         params:
           build: docker-repo
           tag: resource_version/version
           tag_as_latest: true
-      - put: resource_version
-        params: {bump: patch}
       - put: github_release
         params:
           name: resource_version/version
