@@ -61,6 +61,8 @@ jobs:
           build: docker-repo
           tag: docker-repo/version
           tag_as_latest: true
+      - put: resource_version
+        params: {bump: patch}
       - put: github_release
         params:
           name: docker-repo/version
