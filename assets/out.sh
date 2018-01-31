@@ -10,7 +10,8 @@ payload=$(mktemp /tmp/resource-in.XXXXXX)
 
 cat > "${payload}" <&0
 
-jq -r '.// ""' < "${payload}"
+sss=$(jq -r '.source// ""' < "${payload}")
+echo "-> ${sss} <-"
 
 job_dir="$(jq -r '.params.job_dir// ""' < "${payload}")"
 action="$(jq -r '.params.action// ""' < "${payload}")"
