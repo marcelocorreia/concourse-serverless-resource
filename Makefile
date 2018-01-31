@@ -1,7 +1,7 @@
 REPOSITORY=concourse-serverless-resource
 CONTAINER=concourse-serverless-resource
 NAMESPACE=marcelocorreia
-VERSION=$(shell cat version)
+VERSION=$(shell git show version:version)
 PIPELINE_NAME=$(REPOSITORY)
 CI_TARGET?=dev
 CI_TEAM_NAME?=dev
