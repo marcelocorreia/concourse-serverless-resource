@@ -4,42 +4,41 @@ set -e
 cd "${1}"
 exec 3>&1
 exec 1>&2
-set +x
 
 payload=$(mktemp /tmp/resource-in.XXXXXX)
 
 cat > "${payload}" <&0
 
-sss=$(jq -r '.source// ""' < "${payload}")
-echo "-> ${sss} <-"
+aws_access_key_id="$(jq -r '.source.aws_access_key_id// ""' < "${payload}")"
+aws_secret_access_key="$(jq -r '.source.aws_secret_access_key// ""' < "${payload}")"
+export AWS_ACCESS_KEY_ID=${aws_access_key_id}
+export AWS_SECRET_ACCESS_ID=${aws_secret_access_key}
+# Sensitive data should not be printed after set +x
+set +x
 
 job_dir="$(jq -r '.params.job_dir// ""' < "${payload}")"
 action="$(jq -r '.params.action// ""' < "${payload}")"
 handler="$(jq -r '.params.handler// ""' < "${payload}")"
 
-aws_access_key_id="$(jq -r '.source.aws_access_key_id// ""' < "${payload}")"
-aws_secret_access_key="$(jq -r '.source.aws_secret_access_key// ""' < "${payload}")"
-echo "-> ${aws_access_key_id} <-"
-echo "-> ${aws_secret_access_key} <-"
 serverless_version="$(jq -n "{serverless_version:{serverless_version:\"$(serverless --version)\"}}")"
 timestamp="$(jq -n "{version:{timestamp:\"$(date +%s)\"}}")"
 
 
-#case ${action} in
-#	deploy)
-#		echo "Serverless Deploy"
-#		cd $(ls)/${job_dir} && serverless ${action}
-#	  ;;
-#
-#	remove)
-#		echo "Removing Serverless"
-#		cd $(ls)/${job_dir} && serverless ${action}
-#	  ;;
-#
-#	*)
-#		echo "ERROR:"
-#	  ;;
-#esac
+case ${action} in
+	deploy)
+		echo "Serverless Deploy"
+		cd $(ls)/${job_dir} && serverless ${action}
+	  ;;
+
+	remove)
+		echo "Removing Serverless"
+		cd $(ls)/${job_dir} && serverless ${action}
+	  ;;
+
+	*)
+		echo "ERROR:"
+	  ;;
+esac
 
 
 echo "$timestamp" $serverless_version| jq -s add  >&3

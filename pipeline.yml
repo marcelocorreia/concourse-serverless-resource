@@ -23,13 +23,6 @@ resources:
       password: {{docker_password}}
       cache: true
 
-  - name: github_release
-    type: github-release
-    source:
-      user: {{github_user}}
-      repository: {{git_repo}}
-      access_token: {{github_token}}
-
   - name: serverless
     type: serverless-resource
     source:
@@ -63,17 +56,13 @@ jobs:
           build: docker-repo
           tag: resource_version/version
           tag_as_latest: true
-      - put: github_release
-        params:
-          name: resource_version/version
-          tag: resource_version/version
 
   - name: deploy
     build_logs_to_retain: 10
     serial: true
     plan:
       - get: docker-repo
-        trigger: false
+        trigger: true
         passed: [docker-build]
       - put: serverless
         params:
