@@ -67,5 +67,5 @@ jobs:
       - put: serverless
         params:
           job_dir: 'lambda/hello'
-          action: blah
+          action: deploy
 
