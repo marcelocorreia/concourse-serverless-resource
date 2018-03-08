@@ -2,7 +2,7 @@ resource_types:
   - name: serverless-resource
     type: docker-image
     source:
-      repository: marcelocorreia/concourse-serverless-resource
+      repository: marcelocorreia/concourse-serverless-resource:dev
       tag: latest
 
 resources:
