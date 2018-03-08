@@ -6,8 +6,8 @@ PIPELINE_NAME=$(REPOSITORY)
 CI_TARGET?=dev
 CI_TEAM_NAME?=dev
 CI_CREDS_FILE?=$(HOME)/.ssh/ci-credentials.yml
-#CONCOURSE_EXTERNAL_URL?=http://localhost:8080
-CONCOURSE_EXTERNAL_URL?=https://ci.correia.io
+CONCOURSE_EXTERNAL_URL?=http://localhost:8080
+#CONCOURSE_EXTERNAL_URL?=https://ci.correia.io
 
 # Git
 git-push:
