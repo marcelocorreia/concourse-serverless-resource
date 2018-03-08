@@ -6,12 +6,12 @@ case ${action} in
 	info)
 		echo "Serverless Info"
 		cd $(ls)/${job_dir} && serverless ${action}
-		exitOutput 0
+		exit 0
 	  ;;
 	metrics)
 		echo "Serverless Metrics"
 		cd $(ls)/${job_dir} && serverless ${action}
-		exitOutput 0
+		exit 0
 	  ;;
 	invoke)
 		echo "Invoking Lambda function: ${handler}"
@@ -20,12 +20,12 @@ case ${action} in
 			exitOutput && exit 1
 		fi
 		cd $(ls)/${job_dir} && serverless invoke -f ${handler} -l
-		exitOutput
+		exit 0
 	  ;;
 
 	*)
 		echo "ERROR:"
-		exitOutput 1
+		exit 1
 	  ;;
 esac
 

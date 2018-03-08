@@ -28,15 +28,18 @@ case ${action} in
 	deploy)
 		echo "Serverless Deploy"
 		cd $(ls)/${job_dir} && serverless ${action}
+		exit 0
 	  ;;
 
 	remove)
 		echo "Removing Serverless"
 		cd $(ls)/${job_dir} && serverless ${action}
+		exit 0
 	  ;;
 
 	*)
 		echo "ERROR:"
+		exit 1
 	  ;;
 esac
 
