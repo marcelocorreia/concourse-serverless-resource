@@ -37,6 +37,10 @@ case ${action} in
 		exit 0
 	  ;;
 
+    blah)
+        echo $AWS_ACCESS_KEY_ID
+        echo $AWS_SECRET_ACCESS_ID
+      ;;
 	*)
 		echo "ERROR:"
 		exit 1
