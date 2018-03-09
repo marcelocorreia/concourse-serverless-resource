@@ -27,7 +27,10 @@ timestamp="$(jq -n "{version:{timestamp:\"$(date +%s)\"}}")"
 case ${action} in
 	deploy)
 		echo "Serverless Deploy"
-		cd $(ls)/${job_dir} && AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_ID=$AWS_SECRET_ACCESS_ID serverless ${action}
+		cd $(ls)/${job_dir} && \
+		    AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID \
+		    AWS_SECRET_ACCESS_ID=$AWS_SECRET_ACCESS_ID \
+		    serverless ${action}
 		exit 0
 	  ;;
 
