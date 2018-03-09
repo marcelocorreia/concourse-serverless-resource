@@ -27,9 +27,8 @@ timestamp="$(jq -n "{version:{timestamp:\"$(date +%s)\"}}")"
 case ${action} in
 	deploy)
 		echo "Serverless Deploy"
-		cd $(ls)/${job_dir} && \
-		    export
-		    serverless ${action}
+		cd $(ls)/${job_dir} && serverless ${action}
+
 		exit 0
 	  ;;
 
