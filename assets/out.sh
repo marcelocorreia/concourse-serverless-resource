@@ -28,8 +28,7 @@ case ${action} in
 	deploy)
 		echo "Serverless Deploy"
 		cd $(ls)/${job_dir} && \
-		    AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID \
-		    AWS_SECRET_ACCESS_ID=$AWS_SECRET_ACCESS_ID \
+		    export
 		    serverless ${action}
 		exit 0
 	  ;;
