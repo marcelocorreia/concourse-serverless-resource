@@ -48,7 +48,7 @@ jobs:
     build_logs_to_retain: 10
     plan:
       - get: docker-repo
-        trigger: false
+        trigger: true
       - put: resource_version
         params: {bump: patch}
       - put: docker_image
