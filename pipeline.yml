@@ -68,4 +68,5 @@ jobs:
         params:
           job_dir: 'lambda/hello'
           action: deploy
+          extra_params: -s labs
 

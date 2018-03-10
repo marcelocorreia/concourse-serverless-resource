@@ -79,6 +79,9 @@ _concourse-keys:
         cp ./concourse/keys/web/tsa_host_key.pub ./concourse/keys/worker; \
 	fi
 
+deploy-hello:
+	cd lambda/hello && serverless deploy -s labs
+
 # Defined Functions
 define concourse_compose
 	cd concourse && CONCOURSE_EXTERNAL_URL=$(CONCOURSE_EXTERNAL_URL) docker-compose $1

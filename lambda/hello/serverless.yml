@@ -11,7 +11,7 @@ service: serverless-hello-world
 provider:
   name: aws
   runtime: nodejs6.10
-  stage: RnD
+  stage: ${opt:stage}
   region: ap-southeast-2
 
 # The `functions` block defines what code to deploy
