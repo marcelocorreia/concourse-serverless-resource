@@ -80,7 +80,7 @@ _concourse-keys:
 	fi
 
 deploy-hello:
-	cd lambda/hello && serverless deploy -s labs
+	cd serverless/hello && serverless deploy -s labs
 
 # Defined Functions
 define concourse_compose
