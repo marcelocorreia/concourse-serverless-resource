@@ -1,5 +1,5 @@
 REPOSITORY := concourse-serverless-resource
-CONTAINER := mclocal.correia.io:5000/marcelocorreia/concourse-serverless-resource
+CONTAINER := registry:5000/marcelocorreia/concourse-serverless-resource
 NAMESPACE := marcelocorreia
 VERSION = $(shell git show version:version)
 PIPELINE_NAME = $(REPOSITORY)
@@ -35,7 +35,6 @@ pipeline-set: git-push
 		-c pipeline.yml \
 		-l $(CI_CREDS_FILE) \
 		-v git_repo_url=git@github.com:$(NAMESPACE)/$(REPOSITORY).git \
-        -v container_fullname=$(NAMESPACE)/$(CONTAINER) \
         -v container_name=$(CONTAINER) \
 		-v git_repo=$(REPOSITORY) \
         -v git_branch=master \
