@@ -21,6 +21,9 @@ docker-build:
 	docker build -t $(NAMESPACE)/$(CONTAINER):dev .
 .PHONY: docker-build
 
+docker-push:
+	@docker push $(NAMESPACE)/$(CONTAINER)
+
 docker-shell:
 	docker run --rm -it $(NAMESPACE)/$(CONTAINER):dev bash
 .PHONY: docker-shell
@@ -44,7 +47,7 @@ pipeline-login:
 	@fly -t $(CI_TARGET) login -n $(CI_TEAM_NAME) -c $(CONCOURSE_EXTERNAL_URL)
 
 pipeline-watch:
-	fly -t $(CI_TARGET) watch -j $(PIPELINE_NAME)/$(PIPELINE_NAME)
+	fly -t $(CI_TARGET) watch -j $(PIPELINE_NAME)/docker-build
 
 pipeline-destroy:
 	fly -t $(CI_TARGET) destroy-pipeline -p $(PIPELINE_NAME)

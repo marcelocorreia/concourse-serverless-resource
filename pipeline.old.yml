@@ -43,12 +43,27 @@ resources:
 
 
 jobs:
+  - name: docker-build
+    serial: true
+    build_logs_to_retain: 10
+    plan:
+      - get: docker-repo
+        trigger: true
+      - put: resource_version
+        params: {bump: patch}
+      - put: docker_image
+        params:
+          build: docker-repo
+          tag: resource_version/version
+          tag_as_latest: true
+
   - name: deploy
     build_logs_to_retain: 10
     serial: true
     plan:
       - get: docker-repo
         trigger: true
+        passed: [docker-build]
       - put: serverless
         params:
           job_dir: 'lambda/hello'
