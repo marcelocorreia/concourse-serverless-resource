@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -e
+set -ex
 cd "${1}"
 exec 3>&1
 exec 1>&2
