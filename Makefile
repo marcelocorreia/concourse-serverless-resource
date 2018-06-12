@@ -1,6 +1,6 @@
 REPOSITORY := concourse-serverless-resource
-CONTAINER := concourse-serverless-resource
-NAMESPACE := mclocal.correia.io:5000/marcelocorreia
+CONTAINER := mclocal.correia.io:5000/marcelocorreia/concourse-serverless-resource
+NAMESPACE := marcelocorreia
 VERSION = $(shell git show version:version)
 PIPELINE_NAME = $(REPOSITORY)
 CI_TARGET ?= main
@@ -22,10 +22,10 @@ docker-build:
 .PHONY: docker-build
 
 docker-push:
-	@docker push $(NAMESPACE)/$(CONTAINER)
+	@docker push $(CONTAINER)
 
 docker-shell:
-	docker run --rm -it $(NAMESPACE)/$(CONTAINER):dev bash
+	docker run --rm -it $(CONTAINER):dev bash
 .PHONY: docker-shell
 
 # Pipeline
