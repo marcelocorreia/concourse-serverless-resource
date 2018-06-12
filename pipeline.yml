@@ -28,7 +28,6 @@ jobs:
     plan:
       - get: docker-repo
         trigger: true
-        passed: [docker-build]
       - put: serverless
         params:
           job_dir: 'lambda/hello'
