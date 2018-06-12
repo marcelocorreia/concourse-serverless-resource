@@ -14,15 +14,6 @@ resources:
       private_key: {{git_private_key}}
       username: {{github_user}}
 
-  - name: docker_image
-    type: docker-image
-    source:
-      repository: {{container_fullname}}
-      email: {{docker_mail}}
-      username: {{docker_user}}
-      password: {{docker_password}}
-      cache: true
-
   - name: serverless
     type: serverless-resource
     source:
@@ -30,16 +21,6 @@ resources:
       aws_access_key_id: {{aws_access_key_id}}
       aws_secret_access_key: {{aws_secret_access_key}}
 
-  - name: resource_version
-    type: semver
-    source:
-      driver: git
-      initial_version: 0.0.1
-      uri: {{git_repo_url}}
-      branch: version
-      file: version
-      private_key: {{git_private_key}}
-      username: {{github_user}}
 
 
 jobs:
