@@ -1,12 +1,12 @@
-REPOSITORY=concourse-serverless-resource
-CONTAINER=concourse-serverless-resource
-NAMESPACE=marcelocorreia
-VERSION=$(shell git show version:version)
-PIPELINE_NAME=$(REPOSITORY)
-CI_TARGET?=main
-CI_TEAM_NAME?=main
-CI_CREDS_FILE?=$(HOME)/.ssh/ci-credentials.yml
-CONCOURSE_EXTERNAL_URL?=http://localhost:8080
+REPOSITORY := concourse-serverless-resource
+CONTAINER := concourse-serverless-resource
+NAMESPACE := mclocal.correia.io:5000/marcelocorreia
+VERSION = $(shell git show version:version)
+PIPELINE_NAME = $(REPOSITORY)
+CI_TARGET ?= main
+CI_TEAM_NAME ?= main
+CI_CREDS_FILE ?= $(HOME)/.ssh/ci-credentials.yml
+CONCOURSE_EXTERNAL_URL ?= http://localhost:8080
 #CONCOURSE_EXTERNAL_URL?=https://ci.correia.io
 
 # Git
