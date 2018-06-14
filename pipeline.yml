@@ -2,7 +2,7 @@ resource_types:
   - name: serverless-resource
     type: docker-image
     source:
-      repository: 'registry:5000/marcelocorreia/concourse-serverless-resource'
+      repository: {{container_name}}
       tag: latest
 
 resources:
@@ -17,10 +17,10 @@ resources:
   - name: docker_image
     type: docker-image
     source:
-      repository: 'registry:5000/marcelocorreia/concourse-serverless-resource'
+      repository: {{container_name}}
       email: {{docker_mail}}
-      username: {{docker_user}}
-      password: {{docker_password}}
+      username: {{local_docker_user}}
+      password: {{local_docker_password}}
       cache: true
 
   - name: serverless
