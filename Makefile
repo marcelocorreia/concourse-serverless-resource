@@ -33,7 +33,7 @@ docker-shell:
 
 # Pipeline
 pipeline: git-push
-	@echo fly -t $(CI_TARGET) set-pipeline \
+	fly -t $(CI_TARGET) set-pipeline \
 		-n -p $(PIPELINE_NAME) \
 		-c pipeline.yml \
 		-l $(CI_CREDS_FILE) \
