@@ -18,18 +18,21 @@ docker-build:
 	cat Dockerfile | sed  's/ARG version=".*"/ARG version="$(VERSION)"/' > /tmp/Dockerfile.tmp
 	cat /tmp/Dockerfile.tmp > Dockerfile
 	rm /tmp/Dockerfile.tmp
-	docker build -t $(NAMESPACE)/$(CONTAINER):dev .
+	docker build -t $(CONTAINER) .
+	docker build -t $(CONTAINER):dev .
+
 .PHONY: docker-build
 
-docker-push:
+docker-push: docker-build
 	@docker push $(CONTAINER)
+	@docker push $(CONTAINER):dev
 
 docker-shell:
 	docker run --rm -it $(CONTAINER):dev bash
 .PHONY: docker-shell
 
 # Pipeline
-pipeline-set: git-push
+pipeline: git-push
 	fly -t $(CI_TARGET) set-pipeline \
 		-n -p $(PIPELINE_NAME) \
 		-c pipeline.yml \
