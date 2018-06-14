@@ -19,8 +19,6 @@ resources:
     source:
       repository: {{container_name}}
       email: {{docker_mail}}
-      username: {{local_docker_user}}
-      password: {{local_docker_password}}
       cache: true
 
   - name: serverless
